@@ -1,18 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Soal : MonoBehaviour
+[System.Serializable]
+public class Soal
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string soal;
+    public Jawaban[] jawaban;
+}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public class Jawaban
+{
+    public string jawaban;
+    public bool benar;
 }
