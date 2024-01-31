@@ -1,0 +1,46 @@
+{
+    "soalsoal": [
+        {
+            "soal": "Soal 1",
+            "jawaban": [
+                {
+                    "jawaban": "Jawaban 1",
+                    "benar": false
+                },
+                {
+                    "jawaban": "Jawaban 2",
+                    "benar": true
+                },
+                {
+                    "jawaban": "Jawaban 3 ",
+                    "benar": false
+                },
+                {
+                    "jawaban": "Jawaban 4",
+                    "benar": false
+                }
+            ]
+        },
+        {
+            "soal": "Soal 2",
+            "jawaban": [
+                {
+                    "jawaban": "Jawaban 1",
+                    "benar": false
+                },
+                {
+                    "jawaban": "Jawaban 2",
+                    "benar": true
+                },
+                {
+                    "jawaban": "Jawaban 3 ",
+                    "benar": false
+                },
+                {
+                    "jawaban": "Jawaban 4",
+                    "benar": false
+                }
+            ]
+        }
+    ]
+}
