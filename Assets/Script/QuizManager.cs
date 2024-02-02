@@ -10,16 +10,34 @@ public class QuizManager : MonoBehaviour
     public TextMeshProUGUI questionText;
     public Button answerButtonPrefab;
     public Transform answerButtonParent;
-    public string jsonUrl = "https://yourwebsite.com/yourfile.json";
+    private float questionCount;
+    public string jsonUrl;
     public ScoreManager scoreManager;  // Reference to the ScoreManager script (drag it in the Inspector)
 
     private List<Button> answerButtons = new List<Button>();
     public QuizData quizData;
     private int currentQuestionIndex = 0;
 
+
+    [SerializeField] GameObject scorePanel;
+    [SerializeField] GameObject questionPanel;
+
+    float correctCount;
+    float score;
+    string scoreDisplay;
+    [SerializeField] TMP_Text scoreText;
+
     private void Start()
     {
         StartCoroutine(LoadQuizData());
+        
+    }
+
+    private void Update()
+    {
+        
+        scoreDisplay = score.ToString();
+        scoreText.SetText(scoreDisplay);
     }
 
     IEnumerator LoadQuizData()
@@ -41,7 +59,10 @@ public class QuizManager : MonoBehaviour
     void ParseAndDisplayQuiz(string jsonText)
     {
         quizData = JsonUtility.FromJson<QuizData>(jsonText);
-
+        questionCount = quizData.soalsoal.Length;
+        Debug.Log("number of question" + questionCount);
+        scorePanel.SetActive(false);
+        questionPanel.SetActive(true);
         // Display the first question
         DisplayQuestion();
     }
@@ -71,11 +92,7 @@ public class QuizManager : MonoBehaviour
 
                 answerButtons.Add(answerButton);
 
-                // Mark the true button
-                if (answerData.benar)
-                {
-                    MarkTrueButton(answerButton);
-                }
+                
             }
         }
     }
@@ -95,10 +112,15 @@ public class QuizManager : MonoBehaviour
         Debug.Log("Selected Index: " + selectedIndex + ", Correct: " + isCorrect);
 
         // Increase the score and pass the correctness of the answer
-        scoreManager.IncreaseScore(isCorrect);
+
+        if (isCorrect)
+        {
+            correctAnswer();
+        }
 
         // Move to the next question
         currentQuestionIndex++;
+        Debug.Log("score " + score);
 
         // Check if it's the last question
         if (currentQuestionIndex < quizData.soalsoal.Length)
@@ -109,15 +131,16 @@ public class QuizManager : MonoBehaviour
         {
             // It's the last question, handle the end of the quiz
             Debug.Log("End of Quiz");
+            scorePanel.SetActive(true);
+            questionPanel.SetActive(false);
         }
     }
 
-    void MarkTrueButton(Button trueButton)
+    void correctAnswer()
     {
-        // Add visual indication or customization for the true button, e.g., change color
-        ColorBlock colors = trueButton.colors;
-        colors.normalColor = Color.green;
-        trueButton.colors = colors;
+        correctCount++;
+        score = correctCount/(questionCount)*100;
+        Debug.Log("correct : " + correctCount);
     }
 
     [System.Serializable]
