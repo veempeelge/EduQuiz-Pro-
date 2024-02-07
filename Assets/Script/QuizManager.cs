@@ -10,13 +10,16 @@ public class QuizManager : MonoBehaviour
     public TextMeshProUGUI questionText;
     public Button answerButtonPrefab;
     public Transform answerButtonParent;
-    private float questionCount;
+    private int questionCount;
     public string jsonUrl;
-    public ScoreManager scoreManager;  // Reference to the ScoreManager script (drag it in the Inspector)
+    public ScoreManager scoreManager;
 
     private List<Button> answerButtons = new List<Button>();
+    private List<int> Questions = new List<int>();
+    private List<int> Buttons = new List<int>();
     public QuizData quizData;
-    private int currentQuestionIndex = 0;
+    private int currentQuestionIndex;
+    int answersIndex;
 
 
     [SerializeField] GameObject scorePanel;
@@ -26,11 +29,11 @@ public class QuizManager : MonoBehaviour
     float score;
     string scoreDisplay;
     [SerializeField] TMP_Text scoreText;
-
+    int questionAnswered;
     private void Start()
     {
-        StartCoroutine(LoadQuizData());
         
+        StartCoroutine(LoadQuizData(jsonUrl));
     }
 
     private void Update()
@@ -40,9 +43,9 @@ public class QuizManager : MonoBehaviour
         scoreText.SetText(scoreDisplay);
     }
 
-    IEnumerator LoadQuizData()
+    IEnumerator LoadQuizData(string jsonUrl)
     {
-        UnityWebRequest request = UnityWebRequest.Get(jsonUrl);
+        UnityWebRequest request = UnityWebRequest.Get($"https://shorturl.at/{jsonUrl}");
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
@@ -58,36 +61,59 @@ public class QuizManager : MonoBehaviour
 
     void ParseAndDisplayQuiz(string jsonText)
     {
+        for (int i = 0; i < questionCount; i++)
+        {
+            Questions.Add(i);
+        }
+
+        Debug.Log("Random" + Questions.Count);
+
         quizData = JsonUtility.FromJson<QuizData>(jsonText);
+
+        for (int i = 0; i < 5; i++)
+        {
+            Questions.Add(i);
+        }
         questionCount = quizData.soalsoal.Length;
+
         Debug.Log("number of question" + questionCount);
         scorePanel.SetActive(false);
         questionPanel.SetActive(true);
-        // Display the first question
         DisplayQuestion();
+
+        
+
+
     }
 
     void DisplayQuestion()
     {
-        if (quizData != null && currentQuestionIndex < quizData.soalsoal.Length)
+        if (quizData != null)
         {
+            currentQuestionIndex = Questions[Random.Range(0,Questions.Count)];
+            Questions.Remove(currentQuestionIndex);
+
             SoalData currentQuestion = quizData.soalsoal[currentQuestionIndex];
-
-            // Display the question text
             questionText.text = currentQuestion.soal;
-
-            // Clear previous answer buttons
             ClearAnswerButtons();
+            int numberOfAnswer = currentQuestion.jawaban.Length;
 
-            // Spawn answer buttons
-            for (int i = 0; i < currentQuestion.jawaban.Length; i++)
+            for (int a = 0; a < numberOfAnswer; a++)
             {
-                JawabanData answerData = currentQuestion.jawaban[i];
+                Buttons.Add(a);
+            }
+
+            for (int i = 0; i < numberOfAnswer; i++)
+            {
+                answersIndex = Buttons[Random.Range(0, Buttons.Count)];
+                Buttons.Remove(answersIndex);
+
+                JawabanData answerData = currentQuestion.jawaban[answersIndex];
                 Button answerButton = Instantiate(answerButtonPrefab, answerButtonParent);
                 answerButton.GetComponentInChildren<TextMeshProUGUI>().text = answerData.jawaban;
 
-                // Add a listener to the button click event
-                int index = i; // Ensure correct capture of the loop variable
+                
+                int index = i;
                 answerButton.onClick.AddListener(() => OnAnswerButtonClicked(index, answerData.benar));
 
                 answerButtons.Add(answerButton);
@@ -108,31 +134,32 @@ public class QuizManager : MonoBehaviour
 
     void OnAnswerButtonClicked(int selectedIndex, bool isCorrect)
     {
-        // Handle the button click event, e.g., check if the answer is correct
+        
         Debug.Log("Selected Index: " + selectedIndex + ", Correct: " + isCorrect);
 
-        // Increase the score and pass the correctness of the answer
 
         if (isCorrect)
         {
             correctAnswer();
         }
 
-        // Move to the next question
-        currentQuestionIndex++;
+      
+       
+       
+        Debug.Log("QIndex = " + currentQuestionIndex);
         Debug.Log("score " + score);
 
-        // Check if it's the last question
-        if (currentQuestionIndex < quizData.soalsoal.Length)
+        questionAnswered++;
+        if (questionAnswered > questionCount - 1)
         {
-            DisplayQuestion();
-        }
-        else
-        {
-            // It's the last question, handle the end of the quiz
             Debug.Log("End of Quiz");
             scorePanel.SetActive(true);
             questionPanel.SetActive(false);
+           
+        }
+        else
+        {
+           Invoke(nameof(DisplayQuestion), 1f);
         }
     }
 

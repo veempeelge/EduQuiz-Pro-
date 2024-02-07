@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311924, g: 0.38073963, b: 0.3587269, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -338,8 +338,13 @@ MonoBehaviour:
   questionText: {fileID: 1530203124}
   answerButtonPrefab: {fileID: 2276805108145115117, guid: 4fc0a2a65dd33ce408df4cda3c1fe3ba, type: 3}
   answerButtonParent: {fileID: 1972488434}
-  jsonUrl: https://api.npoint.io/830c6cfdf966376bdfc8
+  jsonUrl: https://shorturl.at/pAMY8
   scoreManager: {fileID: 0}
+  Questions:
+  - 0
+  - 1
+  - 2
+  - 3
   quizData:
     soalsoal: []
   scorePanel: {fileID: 142807265}
