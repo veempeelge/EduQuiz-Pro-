@@ -30,6 +30,8 @@ public class QuizManager : MonoBehaviour
     string scoreDisplay;
     [SerializeField] TMP_Text scoreText;
     int questionAnswered;
+
+    bool isClicked;
     private void Start()
     {
         
@@ -88,6 +90,7 @@ public class QuizManager : MonoBehaviour
 
     void DisplayQuestion()
     {
+        isClicked = false;
         if (quizData != null)
         {
             currentQuestionIndex = Questions[Random.Range(0,Questions.Count)];
@@ -134,33 +137,56 @@ public class QuizManager : MonoBehaviour
 
     void OnAnswerButtonClicked(int selectedIndex, bool isCorrect)
     {
-        
-        Debug.Log("Selected Index: " + selectedIndex + ", Correct: " + isCorrect);
-
-
-        if (isCorrect)
+        if (!isClicked)
         {
-            correctAnswer();
-        }
+            Debug.Log("Selected Index: " + selectedIndex + ", Correct: " + isCorrect);
 
-      
-       
-       
-        Debug.Log("QIndex = " + currentQuestionIndex);
-        Debug.Log("score " + score);
 
-        questionAnswered++;
-        if (questionAnswered > questionCount - 1)
-        {
-            Debug.Log("End of Quiz");
-            scorePanel.SetActive(true);
-            questionPanel.SetActive(false);
-           
+            if (isCorrect)
+            {
+                correctAnswer();
+            }
+            else
+            {
+                //wrong answer animation
+            }
+
+
+
+
+            Debug.Log("QIndex = " + currentQuestionIndex);
+            Debug.Log("score " + score);
+
+            questionAnswered++;
+
+            if (questionAnswered > questionCount - 1)
+            {
+                Debug.Log("End of Quiz");
+                scorePanel.SetActive(true);
+                questionPanel.SetActive(false);
+
+            }
+            else
+            {
+                Invoke(nameof(DisplayQuestion), 1f);
+
+            }
+
+            isClicked = true;
         }
         else
         {
-           Invoke(nameof(DisplayQuestion), 1f);
+            Debug.Log("alr answered");
         }
+
+        foreach (Button button in answerButtons)
+        {
+           if (button != this)
+           {
+                Destroy(button.gameObject);
+           }
+        }
+        answerButtons.Clear();
     }
 
     void correctAnswer()
@@ -168,6 +194,7 @@ public class QuizManager : MonoBehaviour
         correctCount++;
         score = correctCount/(questionCount)*100;
         Debug.Log("correct : " + correctCount);
+        //change to green/ any animation
     }
 
     [System.Serializable]
