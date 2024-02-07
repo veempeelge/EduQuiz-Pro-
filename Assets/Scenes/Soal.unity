@@ -338,13 +338,8 @@ MonoBehaviour:
   questionText: {fileID: 1530203124}
   answerButtonPrefab: {fileID: 2276805108145115117, guid: 4fc0a2a65dd33ce408df4cda3c1fe3ba, type: 3}
   answerButtonParent: {fileID: 1972488434}
-  jsonUrl: https://shorturl.at/pAMY8
+  jsonUrl: pAMY8
   scoreManager: {fileID: 0}
-  Questions:
-  - 0
-  - 1
-  - 2
-  - 3
   quizData:
     soalsoal: []
   scorePanel: {fileID: 142807265}
