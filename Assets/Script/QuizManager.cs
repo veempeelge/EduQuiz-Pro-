@@ -24,6 +24,7 @@ public class QuizManager : MonoBehaviour
 
     [SerializeField] GameObject scorePanel;
     [SerializeField] GameObject questionPanel;
+    [SerializeField] GameObject inputCodePanel;
 
     float correctCount;
     float score;
@@ -32,22 +33,39 @@ public class QuizManager : MonoBehaviour
     int questionAnswered;
 
     bool isClicked;
+    [SerializeField] TMP_Text textInput;
+
+    private Button _clickedButton;
+    [SerializeField] Button enterButton;
+    string link;
+
     private void Start()
     {
-        
-        StartCoroutine(LoadQuizData(jsonUrl));
+        enterButton.onClick.AddListener(StartGame);
     }
 
     private void Update()
     {
-        
+        jsonUrl = textInput.text.ToString();
         scoreDisplay = score.ToString();
         scoreText.SetText(scoreDisplay);
     }
 
-    IEnumerator LoadQuizData(string jsonUrl)
+    void StartGame()
     {
-        UnityWebRequest request = UnityWebRequest.Get($"https://shorturl.at/{jsonUrl}");
+        jsonUrl = textInput.text.ToString();
+        //link = $"https://shorturl.at/{jsonUrl}";
+        //link = "https://api.npoint.io/" + jsonUrl;
+        inputCodePanel.SetActive(false);
+        questionPanel.SetActive(true);
+        StartCoroutine(LoadQuizData(jsonUrl));
+    }
+
+    IEnumerator LoadQuizData(string code)
+    {
+
+        UnityWebRequest request = UnityWebRequest.Get($"https://shorturl.at/{code}");
+     
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
@@ -57,7 +75,8 @@ public class QuizManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Failed to load JSON: " + request.error);
+            Debug.Log(jsonUrl);
+            Debug.Log("Failed to load JSON: " + request.error);
         }
     }
 
@@ -90,15 +109,17 @@ public class QuizManager : MonoBehaviour
 
     void DisplayQuestion()
     {
+        ClearAnswerButtons();
         isClicked = false;
         if (quizData != null)
         {
+           
             currentQuestionIndex = Questions[Random.Range(0,Questions.Count)];
             Questions.Remove(currentQuestionIndex);
 
             SoalData currentQuestion = quizData.soalsoal[currentQuestionIndex];
             questionText.text = currentQuestion.soal;
-            ClearAnswerButtons();
+            
             int numberOfAnswer = currentQuestion.jawaban.Length;
 
             for (int a = 0; a < numberOfAnswer; a++)
@@ -139,20 +160,20 @@ public class QuizManager : MonoBehaviour
     {
         if (!isClicked)
         {
+            _clickedButton = answerButtons[selectedIndex];
             Debug.Log("Selected Index: " + selectedIndex + ", Correct: " + isCorrect);
-
+            
 
             if (isCorrect)
             {
+                _clickedButton.GetComponent<Image>().color = Color.green;
                 correctAnswer();
             }
             else
             {
+                _clickedButton.GetComponent<Image>().color = Color.red;
                 //wrong answer animation
             }
-
-
-
 
             Debug.Log("QIndex = " + currentQuestionIndex);
             Debug.Log("score " + score);
@@ -179,14 +200,17 @@ public class QuizManager : MonoBehaviour
             Debug.Log("alr answered");
         }
 
+        
+
         foreach (Button button in answerButtons)
         {
-           if (button != this)
+           if (button != _clickedButton)
            {
-                Destroy(button.gameObject);
+                button.GetComponent<Image>().color = Color.grey;
            }
         }
-        answerButtons.Clear();
+
+        //answerButtons.Clear();
     }
 
     void correctAnswer()
