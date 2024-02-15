@@ -11,7 +11,7 @@ public class QuizManager : MonoBehaviour
     public Button answerButtonPrefab;
     public Transform answerButtonParent;
     private int questionCount;
-    public string jsonUrl;
+    public string code;
     public ScoreManager scoreManager;
 
     private List<Button> answerButtons = new List<Button>();
@@ -38,6 +38,7 @@ public class QuizManager : MonoBehaviour
     private Button _clickedButton;
     [SerializeField] Button enterButton;
     string link;
+    string link2;
 
     private void Start()
     {
@@ -46,36 +47,38 @@ public class QuizManager : MonoBehaviour
 
     private void Update()
     {
-        jsonUrl = textInput.text.ToString();
+        code = textInput.text.ToString();
         scoreDisplay = score.ToString();
         scoreText.SetText(scoreDisplay);
     }
 
     void StartGame()
     {
-        jsonUrl = textInput.text.ToString();
-        //link = $"https://shorturl.at/{jsonUrl}";
-        //link = "https://api.npoint.io/" + jsonUrl;
-        inputCodePanel.SetActive(false);
-        questionPanel.SetActive(true);
-        StartCoroutine(LoadQuizData(jsonUrl));
+        code = textInput.text.ToString();
+        link = $"google{code}";
+        link2 = $"https://api.npoint.io/{code}";
+        
+        StartCoroutine(LoadQuizData(link));
     }
 
     IEnumerator LoadQuizData(string code)
     {
 
-        UnityWebRequest request = UnityWebRequest.Get($"https://shorturl.at/{code}");
-     
+        UnityWebRequest request = UnityWebRequest.Get(link2);
+
+
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            inputCodePanel.SetActive(false);
+            questionPanel.SetActive(true);
             string jsonText = request.downloadHandler.text;
             ParseAndDisplayQuiz(jsonText);
         }
         else
         {
-            Debug.Log(jsonUrl);
+            Debug.Log(code);
             Debug.Log("Failed to load JSON: " + request.error);
         }
     }
