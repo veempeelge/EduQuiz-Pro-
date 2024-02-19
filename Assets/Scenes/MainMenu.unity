@@ -1055,8 +1055,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -879, y: 273}
-  m_SizeDelta: {x: 754.2272, y: 230.6845}
+  m_AnchoredPosition: {x: -881, y: 386}
+  m_SizeDelta: {x: 800.554, y: 230.6845}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &802337309
 MonoBehaviour:
@@ -1078,7 +1078,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: EduQuiz-Pro
+  m_text: Brainiac-Mania
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fb6920ca3e69bb441a2948d6ce5fa48d, type: 2}
   m_sharedMaterial: {fileID: -8857243687947581116, guid: fb6920ca3e69bb441a2948d6ce5fa48d, type: 2}
@@ -1087,8 +1087,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280098077
+  m_fontColor: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
