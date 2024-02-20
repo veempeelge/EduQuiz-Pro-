@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311924, g: 0.38073963, b: 0.3587269, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -493,7 +493,7 @@ MonoBehaviour:
   questionText: {fileID: 1530203124}
   answerButtonPrefab: {fileID: 2276805108145115117, guid: 4fc0a2a65dd33ce408df4cda3c1fe3ba, type: 3}
   answerButtonParent: {fileID: 1972488434}
-  jsonUrl: pAMY8
+  code: 
   scoreManager: {fileID: 0}
   quizData:
     soalsoal: []
@@ -501,7 +501,7 @@ MonoBehaviour:
   questionPanel: {fileID: 1974623763}
   inputCodePanel: {fileID: 1250222389}
   scoreText: {fileID: 739944156}
-  textInput: {fileID: 835556949}
+  input: {fileID: 396113543}
   enterButton: {fileID: 875134041}
 --- !u!1 &396113541
 GameObject:

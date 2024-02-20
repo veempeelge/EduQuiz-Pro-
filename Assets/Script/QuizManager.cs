@@ -33,38 +33,34 @@ public class QuizManager : MonoBehaviour
     int questionAnswered;
 
     bool isClicked;
-    [SerializeField] TMP_Text textInput;
+    [SerializeField] TMPro.TMP_InputField input;
 
     private Button _clickedButton;
     [SerializeField] Button enterButton;
-    string link;
-    string link2;
+    string url;
 
     private void Start()
     {
+        input.onEndEdit.AddListener(Validate);
         enterButton.onClick.AddListener(StartGame);
     }
 
     private void Update()
     {
-        code = textInput.text.ToString();
+      
         scoreDisplay = score.ToString();
         scoreText.SetText(scoreDisplay);
     }
 
     void StartGame()
     {
-        code = textInput.text.ToString();
-        link = $"google{code}";
-        link2 = $"https://api.npoint.io/{code}";
-        
-        StartCoroutine(LoadQuizData(link));
+        StartCoroutine(LoadQuizData(url));
     }
 
     IEnumerator LoadQuizData(string code)
     {
 
-        UnityWebRequest request = UnityWebRequest.Get(link2);
+        UnityWebRequest request = UnityWebRequest.Get(code);
 
 
         yield return request.SendWebRequest();
@@ -108,6 +104,29 @@ public class QuizManager : MonoBehaviour
         
 
 
+    }
+    private void Validate(string arg0)
+    {
+        url = $"https://shorturl.at/{arg0}";
+        Debug.Log(url);
+
+        var req = UnityWebRequest.Get(url);
+
+        req.SendWebRequest().completed += op =>
+        {
+            Debug.Log(req.downloadHandler.text);
+
+            //ini buat handling kalau error atau sukses, kode nya bisa di masukin sebelum break utk masing2 kondisi
+            switch (req.result)
+            {
+                case UnityWebRequest.Result.Success:
+                    break;
+                case UnityWebRequest.Result.ConnectionError:
+                case UnityWebRequest.Result.ProtocolError:
+                case UnityWebRequest.Result.DataProcessingError:
+                    break;
+            }
+        };
     }
 
     void DisplayQuestion()
