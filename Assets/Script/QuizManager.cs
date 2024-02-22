@@ -25,6 +25,7 @@ public class QuizManager : MonoBehaviour
     [SerializeField] GameObject scorePanel;
     [SerializeField] GameObject questionPanel;
     [SerializeField] GameObject inputCodePanel;
+    [SerializeField] TMP_Text title;
 
     float correctCount;
     float score;
@@ -39,6 +40,12 @@ public class QuizManager : MonoBehaviour
     [SerializeField] Button enterButton;
     string url;
 
+    DropDown dropDown;
+
+    float timer;
+    [SerializeField] float maxTimer;
+    [SerializeField] Image timerImage;
+    [SerializeField] TMP_Text QCountDisplay;
     private void Start()
     {
         input.onEndEdit.AddListener(Validate);
@@ -47,21 +54,43 @@ public class QuizManager : MonoBehaviour
 
     private void Update()
     {
-      
         scoreDisplay = score.ToString();
-        scoreText.SetText(scoreDisplay);
+        scoreText.SetText("Score = " + scoreDisplay);
+
+        if (!isClicked)
+        {
+            timer += 1f * Time.deltaTime;
+        }
+       
+
+        if (timer > maxTimer)
+        {
+            unanswered();
+            
+        }
+
+       
+
+        timerImage.fillAmount = timer / maxTimer;
     }
 
     void StartGame()
     {
-        StartCoroutine(LoadQuizData(url));
+        timer = 0;
     }
 
+    void unanswered()
+    {
+        Invoke(nameof(DisplayQuestion), 1f);
+        questionAnswered++;
+        Debug.Log("unanswered");
+        timer = 0;
+    }
     IEnumerator LoadQuizData(string code)
     {
 
         UnityWebRequest request = UnityWebRequest.Get(code);
-
+        
 
         yield return request.SendWebRequest();
 
@@ -81,6 +110,7 @@ public class QuizManager : MonoBehaviour
 
     void ParseAndDisplayQuiz(string jsonText)
     {
+        timer = 0;
         for (int i = 0; i < questionCount; i++)
         {
             Questions.Add(i);
@@ -89,27 +119,22 @@ public class QuizManager : MonoBehaviour
         Debug.Log("Random" + Questions.Count);
 
         quizData = JsonUtility.FromJson<QuizData>(jsonText);
-
-        for (int i = 0; i < 5; i++)
+        title.text = quizData.quiztitle;
+        questionCount = quizData.soalsoal.Length;
+        for (int i = 0; i < questionCount; i++)
         {
             Questions.Add(i);
         }
-        questionCount = quizData.soalsoal.Length;
-
         Debug.Log("number of question" + questionCount);
         scorePanel.SetActive(false);
         questionPanel.SetActive(true);
         DisplayQuestion();
-
-        
-
-
     }
     private void Validate(string arg0)
     {
         url = $"https://shorturl.at/{arg0}";
         Debug.Log(url);
-
+        StartCoroutine(LoadQuizData(url));
         var req = UnityWebRequest.Get(url);
 
         req.SendWebRequest().completed += op =>
@@ -131,12 +156,15 @@ public class QuizManager : MonoBehaviour
 
     void DisplayQuestion()
     {
+        QCountDisplay.SetText(questionAnswered + 1 + "/" + questionCount);
+        timer = 0;
         ClearAnswerButtons();
         isClicked = false;
         if (quizData != null)
         {
            
             currentQuestionIndex = Questions[Random.Range(0,Questions.Count)];
+            Debug.Log(questionCount);
             Questions.Remove(currentQuestionIndex);
 
             SoalData currentQuestion = quizData.soalsoal[currentQuestionIndex];
@@ -197,11 +225,10 @@ public class QuizManager : MonoBehaviour
                 //wrong answer animation
             }
 
-            Debug.Log("QIndex = " + currentQuestionIndex);
-            Debug.Log("score " + score);
+
 
             questionAnswered++;
-
+           
             if (questionAnswered > questionCount - 1)
             {
                 Debug.Log("End of Quiz");
@@ -247,13 +274,16 @@ public class QuizManager : MonoBehaviour
     public class QuizData
     {
         public SoalData[] soalsoal;
+        public string quiztitle;
     }
 
     [System.Serializable]
     public class SoalData
     {
+       
         public string soal;
         public JawabanData[] jawaban;
+        
     }
 
     [System.Serializable]
