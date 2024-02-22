@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.Networking;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class QuizManager : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class QuizManager : MonoBehaviour
 
     private Button _clickedButton;
     [SerializeField] Button enterButton;
+    [SerializeField] Button backButton;
     string url;
 
     DropDown dropDown;
@@ -46,10 +48,13 @@ public class QuizManager : MonoBehaviour
     [SerializeField] float maxTimer;
     [SerializeField] Image timerImage;
     [SerializeField] TMP_Text QCountDisplay;
+
+    bool linkWorked;
     private void Start()
     {
         input.onEndEdit.AddListener(Validate);
         enterButton.onClick.AddListener(StartGame);
+        backButton.onClick.AddListener(BackToMainMenu);
     }
 
     private void Update()
@@ -231,15 +236,11 @@ public class QuizManager : MonoBehaviour
            
             if (questionAnswered > questionCount - 1)
             {
-                Debug.Log("End of Quiz");
-                scorePanel.SetActive(true);
-                questionPanel.SetActive(false);
-
+                Invoke(nameof(QuizEnd), 1f);
             }
             else
             {
                 Invoke(nameof(DisplayQuestion), 1f);
-
             }
 
             isClicked = true;
@@ -262,6 +263,12 @@ public class QuizManager : MonoBehaviour
         //answerButtons.Clear();
     }
 
+    void QuizEnd()
+    {
+        scorePanel.SetActive(true);
+        questionPanel.SetActive(false);
+    }
+
     void correctAnswer()
     {
         correctCount++;
@@ -270,6 +277,10 @@ public class QuizManager : MonoBehaviour
         //change to green/ any animation
     }
 
+    void BackToMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
     [System.Serializable]
     public class QuizData
     {
@@ -292,4 +303,6 @@ public class QuizManager : MonoBehaviour
         public bool benar;
         public string jawaban;
     }
+
+
 }
