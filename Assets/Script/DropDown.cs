@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 using UnityEngine.Windows;
 using static QuizManager;
 
@@ -19,13 +19,21 @@ public class DropDown : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        dropDown.onValueChanged.AddListener(DropdownValueChanged);
         StartCoroutine(LoadQuizData());
+    }
+
+    private void DropdownValueChanged(int arg0)
+    {
+        var selectedValue = dropDown.options[dropDown.value].text;
+        var option = Array.Find(dropdowndata.listOfOptions, x => x.options.Equals(selectedValue));
+        inputCode.text = option.code;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 
     IEnumerator LoadQuizData()

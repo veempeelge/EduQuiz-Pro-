@@ -52,8 +52,8 @@ public class QuizManager : MonoBehaviour
     bool linkWorked;
     private void Start()
     {
-        input.onEndEdit.AddListener(Validate);
-        enterButton.onClick.AddListener(StartGame);
+       // input.onEndEdit.AddListener(Validate);
+        enterButton.onClick.AddListener(Validate);
         backButton.onClick.AddListener(BackToMainMenu);
     }
 
@@ -135,9 +135,10 @@ public class QuizManager : MonoBehaviour
         questionPanel.SetActive(true);
         DisplayQuestion();
     }
-    private void Validate(string arg0)
+    private void Validate()
     {
-        url = $"https://shorturl.at/{arg0}";
+        code = input.text;
+        url = $"https://shorturl.at/{code}";
         Debug.Log(url);
         StartCoroutine(LoadQuizData(url));
         var req = UnityWebRequest.Get(url);
