@@ -185,6 +185,7 @@ public class QuizManager : MonoBehaviour
 
             for (int i = 0; i < numberOfAnswer; i++)
             {
+            
                 answersIndex = Buttons[Random.Range(0, Buttons.Count)];
                 Buttons.Remove(answersIndex);
 
@@ -197,7 +198,7 @@ public class QuizManager : MonoBehaviour
                 answerButton.onClick.AddListener(() => OnAnswerButtonClicked(index, answerData.benar));
 
                 answerButtons.Add(answerButton);
-
+                
                 
             }
         }
@@ -235,7 +236,7 @@ public class QuizManager : MonoBehaviour
 
             questionAnswered++;
            
-            if (questionAnswered > questionCount - 1)
+            if (questionAnswered == questionCount)
             {
                 Invoke(nameof(QuizEnd), 1f);
             }
