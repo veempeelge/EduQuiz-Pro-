@@ -120,7 +120,7 @@ public class QuizManager : MonoBehaviour
             Questions.Add(i);
         }
 
-        Debug.Log("Random" + Questions.Count);
+       // Debug.Log("Random" + Questions.Count);
 
         quizData = JsonUtility.FromJson<QuizData>(jsonText);
         title.text = quizData.quiztitle;
@@ -129,7 +129,7 @@ public class QuizManager : MonoBehaviour
         {
             Questions.Add(i);
         }
-        Debug.Log("number of question" + questionCount);
+       // Debug.Log("number of question" + questionCount);
         scorePanel.SetActive(false);
         questionPanel.SetActive(true);
         DisplayQuestion();
@@ -138,7 +138,7 @@ public class QuizManager : MonoBehaviour
     {
         code = input.text;
         url = $"https://shorturl.at/{code}";
-        Debug.Log(url);
+        //Debug.Log(url);
         StartCoroutine(LoadQuizData(url));
         var req = UnityWebRequest.Get(url);
 
@@ -274,7 +274,7 @@ public class QuizManager : MonoBehaviour
     {
         correctCount++;
         score = correctCount/(questionCount)*100;
-        Debug.Log("correct : " + correctCount);
+       // Debug.Log("correct : " + correctCount);
         //change to green/ any animation
     }
 

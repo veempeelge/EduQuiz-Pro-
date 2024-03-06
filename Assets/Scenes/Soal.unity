@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 142807270}
   - component: {fileID: 142807269}
   - component: {fileID: 142807271}
+  - component: {fileID: 142807272}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -350,13 +351,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4717680773cb8b54dac94a9e587114c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  name: 
   enterName: {fileID: 1051937489}
   enterField: {fileID: 1232793070}
   scoreInput: {fileID: 739944156}
+  nameText: {fileID: 375994467}
   quizManager: {fileID: 356067645}
   dreamLo: {fileID: 142807271}
+  highScore: {fileID: 142807270}
 --- !u!114 &142807270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,6 +385,20 @@ MonoBehaviour:
   IUpgradedAndGotSSL: 0
   privateCode: Jz0fSxh6L02XhbEl8Za4uwsMuLyIolQE629Q5U0ogByQ
   publicCode: 65e7ec638f40bbbe88a54125
+--- !u!114 &142807272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142807265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3108f7590557fe40a9eb0a9202ec9e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rNames: []
+  rScores: []
 --- !u!1 &173264729
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,7 +892,7 @@ GameObject:
   - component: {fileID: 375994468}
   - component: {fileID: 375994467}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: Name Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -924,11 +939,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 41
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
-    m_MaxSize: 40
+    m_MaxSize: 41
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 0
