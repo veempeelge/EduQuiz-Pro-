@@ -29,7 +29,7 @@ public class QuizManager : MonoBehaviour
     [SerializeField] TMP_Text title;
 
     float correctCount;
-    float score;
+    public float score;
     string scoreDisplay;
     [SerializeField] TMP_Text scoreText;
     int questionAnswered;
@@ -39,7 +39,6 @@ public class QuizManager : MonoBehaviour
 
     private Button _clickedButton;
     [SerializeField] Button enterButton;
-    [SerializeField] Button backButton;
     string url;
 
     DropDown dropDown;
@@ -54,7 +53,7 @@ public class QuizManager : MonoBehaviour
     {
        // input.onEndEdit.AddListener(Validate);
         enterButton.onClick.AddListener(Validate);
-        backButton.onClick.AddListener(BackToMainMenu);
+       
     }
 
     private void Update()

@@ -30,7 +30,7 @@ public class dreamloLeaderBoard : MonoBehaviour {
 	
 	public struct Score {
 		public string playerName;
-		public int score;
+		public float score;
 		public int seconds;
 		public string shortText;
 		public string dateString;
@@ -63,7 +63,7 @@ public class dreamloLeaderBoard : MonoBehaviour {
 		return go.GetComponent<dreamloLeaderBoard>();
 	}
 	
-	public void AddScore(string playerName, int totalScore)
+	public void AddScore(string playerName, float totalScore)
 	{
 		AddScoreWithPipe(playerName, totalScore);
 	}
@@ -79,7 +79,7 @@ public class dreamloLeaderBoard : MonoBehaviour {
 	}
 	
 	// This function saves a trip to the server. Adds the score and retrieves results in one trip.
-	void AddScoreWithPipe(string playerName, int totalScore)
+	void AddScoreWithPipe(string playerName, float totalScore)
 	{
 		playerName = Clean(playerName);
 		StartCoroutine(GetRequest(dreamloWebserviceURL + privateCode + "/add-pipe/" + UnityWebRequest.EscapeURL(playerName) + "/" + totalScore.ToString()));

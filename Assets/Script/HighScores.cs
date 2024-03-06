@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class HighScores : MonoBehaviour
 {
-    const string privateCode = "Private Key";  //Key to Upload New Info
-    const string publicCode = "Public Key";   //Key to download
+    const string privateCode = "Jz0fSxh6L02XhbEl8Za4uwsMuLyIolQE629Q5U0ogByQ";  //Key to Upload New Info
+    const string publicCode = "65e7ec638f40bbbe88a54125";   //Key to download
     const string webURL = "http://dreamlo.com/lb/"; //  Website the keys are for
 
     public PlayerScore[] scoreList;
@@ -18,12 +18,12 @@ public class HighScores : MonoBehaviour
         myDisplay = GetComponent<DisplayHighscores>();
     }
     
-    public static void UploadScore(string username, int score)  //CALLED when Uploading new Score to WEBSITE
+    public static void UploadScore(string username, float score)  //CALLED when Uploading new Score to WEBSITE
     {//STATIC to call from other scripts easily
         instance.StartCoroutine(instance.DatabaseUpload(username,score)); //Calls Instance
     }
 
-    IEnumerator DatabaseUpload(string userame, int score) //Called when sending new score to Website
+    IEnumerator DatabaseUpload(string userame, float score) //Called when sending new score to Website
     {
         WWW www = new WWW(webURL + privateCode + "/add/" + WWW.EscapeURL(userame) + "/" + score);
         yield return www;
@@ -42,8 +42,8 @@ public class HighScores : MonoBehaviour
     }
     IEnumerator DatabaseDownload()
     {
-        //WWW www = new WWW(webURL + publicCode + "/pipe/"); //Gets the whole list
-        WWW www = new WWW(webURL + publicCode + "/pipe/0/10"); //Gets top 10
+        WWW www = new WWW(webURL + publicCode + "/pipe/"); //Gets the whole list
+        //WWW www = new WWW(webURL + publicCode + "/pipe/0/10"); //Gets top 10
         yield return www;
 
         if (string.IsNullOrEmpty(www.error))
@@ -62,7 +62,7 @@ public class HighScores : MonoBehaviour
         {
             string[] entryInfo = entries[i].Split(new char[] {'|'});
             string username = entryInfo[0];
-            int score = int.Parse(entryInfo[1]);
+            float score = int.Parse(entryInfo[1]);
             scoreList[i] = new PlayerScore(username,score);
             print(scoreList[i].username + ": " + scoreList[i].score);
         }
@@ -72,9 +72,9 @@ public class HighScores : MonoBehaviour
 public struct PlayerScore //Creates place to store the variables for the name and score of each player
 {
     public string username;
-    public int score;
+    public float score;
 
-    public PlayerScore(string _username, int _score)
+    public PlayerScore(string _username, float _score)
     {
         username = _username;
         score = _score;
