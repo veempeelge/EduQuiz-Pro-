@@ -26,6 +26,7 @@ public class QuizManager : MonoBehaviour
     [SerializeField] GameObject scorePanel;
     [SerializeField] GameObject questionPanel;
     [SerializeField] GameObject inputCodePanel;
+    [SerializeField] GameObject previewButton;
     [SerializeField] TMP_Text title;
 
     float correctCount;
@@ -53,6 +54,7 @@ public class QuizManager : MonoBehaviour
     [SerializeField] GameState gameState;
     private void Start()
     {
+        previewButton.SetActive(false);
         scorePanel.SetActive(false);
         questionPanel.SetActive(false);
         gameState.SwitchState(State.EnterCode);
