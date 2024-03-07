@@ -49,9 +49,14 @@ public class QuizManager : MonoBehaviour
     [SerializeField] TMP_Text QCountDisplay;
 
     bool linkWorked;
+
+    [SerializeField] GameState gameState;
     private void Start()
     {
-       // input.onEndEdit.AddListener(Validate);
+        scorePanel.SetActive(false);
+        questionPanel.SetActive(false);
+        gameState.SwitchState(State.EnterCode);
+        // input.onEndEdit.AddListener(Validate);
         enterButton.onClick.AddListener(Validate);
        
     }
@@ -100,8 +105,7 @@ public class QuizManager : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            inputCodePanel.SetActive(false);
-            questionPanel.SetActive(true);
+            gameState.SwitchState(State.Quiz);
             string jsonText = request.downloadHandler.text;
             ParseAndDisplayQuiz(jsonText);
         }
@@ -265,9 +269,11 @@ public class QuizManager : MonoBehaviour
     }
 
     void QuizEnd()
+
     {
         scorePanel.SetActive(true);
         questionPanel.SetActive(false);
+        //gameState.SwitchState(State.FinishQuiz);
     }
 
     void correctAnswer()

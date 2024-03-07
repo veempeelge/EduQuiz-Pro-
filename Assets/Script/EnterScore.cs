@@ -22,6 +22,7 @@ public class EnterScore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         enterName.onClick.AddListener(LeaderboardInput);
     }
 
