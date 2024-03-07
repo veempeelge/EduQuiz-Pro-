@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +9,16 @@ public class DisplayHighscores : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI[] rNames;
     public TMPro.TextMeshProUGUI[] rScores;
+
+    [SerializeField] TextMeshProUGUI textPrefabs;
+    [SerializeField] TextMeshProUGUI scorePrefabs;
+
+    [SerializeField] Transform nameTextParent;
+    [SerializeField] Transform scoreTextParent;
+
+    public List<int> Names = new List<int>();
+    public List<int> Scores = new List<int>();
+
     HighScores myScores;
 
     void Start() //Fetches the Data at the beginning
@@ -20,15 +32,32 @@ public class DisplayHighscores : MonoBehaviour
     }
     public void SetScoresToMenu(PlayerScore[] highscoreList) //Assigns proper name and score for each text value
     {
-        for (int i = 0; i < rNames.Length;i ++)
+        for (int a = 0; a < highscoreList.Length; a++)
         {
-            rNames[i].text = i + 1 + ". ";
-            if (highscoreList.Length > i)
+            Names.Add(a);
+            Scores.Add(a);
+        }
+
+        for (int i = 0; i < Names.Count;i ++)
+        {
+            TMP_Text nameText = Instantiate(textPrefabs, nameTextParent);
+            TMP_Text scoreText = Instantiate(scorePrefabs, scoreTextParent);
+
+            nameText.text = highscoreList[i].username;
+            scoreText.text = highscoreList[i].score.ToString();
+            //rNames[i].text = i + 1 + ". ";
+            if (highscoreList.Length < i)
             {
-                rScores[i].text = highscoreList[i].score.ToString();
-                rNames[i].text = highscoreList[i].username;
+                //rScores[i].text = highscoreList[i].score.ToString();
+                //rNames[i].text = highscoreList[i].username;
+                
             }
         }
+    }
+
+    public void AddList()
+    {
+       
     }
     IEnumerator RefreshHighscores() //Refreshes the scores every 30 seconds
     {
