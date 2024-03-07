@@ -18,17 +18,17 @@ public class EnterScore : MonoBehaviour
 
     [SerializeField] dreamloLeaderBoard dreamLo;
     [SerializeField] HighScores highScore;
+
     // Start is called before the first frame update
     void Start()
     {
-        score = 50;
-   
         enterName.onClick.AddListener(LeaderboardInput);
     }
 
     // Update is called once per frame
     void Update()
     {
+        score = System.Convert.ToInt32(quizManager.score);
         playerName = nameText.text;
     }
 
