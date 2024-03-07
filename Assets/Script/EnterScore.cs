@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class EnterScore : MonoBehaviour
 {
-    int score;
+    float score;
     string playerName;
 
     public Button enterName;
@@ -29,7 +29,7 @@ public class EnterScore : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        score = System.Convert.ToInt32(quizManager.score);
+        score = quizManager.score;
         playerName = nameText.text;
     }
 
@@ -37,7 +37,7 @@ public class EnterScore : MonoBehaviour
     {
         Debug.Log(name + score);
         SceneManager.LoadScene("Leaderboard");
-        HighScores.UploadScore(playerName, score);
+       // HighScores.UploadScore(playerName, score);
         highScore.UploadNameScore(playerName, score);
         dreamLo.AddScore(name, score);
 

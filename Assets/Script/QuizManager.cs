@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
+using System;
 
 public class QuizManager : MonoBehaviour
 {
@@ -52,12 +54,15 @@ public class QuizManager : MonoBehaviour
     bool linkWorked;
 
     [SerializeField] GameState gameState;
+    [SerializeField] private GameObject tryAgain;
+
     private void Start()
     {
         previewButton.SetActive(false);
         scorePanel.SetActive(false);
         questionPanel.SetActive(false);
-        gameState.SwitchState(State.EnterCode);
+        tryAgain.SetActive(false);
+        //gameState.SwitchState(State.EnterCode);
         // input.onEndEdit.AddListener(Validate);
         enterButton.onClick.AddListener(Validate);
        
@@ -107,7 +112,7 @@ public class QuizManager : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            gameState.SwitchState(State.Quiz);
+           
             string jsonText = request.downloadHandler.text;
             ParseAndDisplayQuiz(jsonText);
         }
@@ -120,49 +125,75 @@ public class QuizManager : MonoBehaviour
 
     void ParseAndDisplayQuiz(string jsonText)
     {
-        timer = 0;
-        for (int i = 0; i < questionCount; i++)
-        {
-            Questions.Add(i);
-        }
 
-       // Debug.Log("Random" + Questions.Count);
-
-        quizData = JsonUtility.FromJson<QuizData>(jsonText);
-        title.text = quizData.quiztitle;
-        questionCount = quizData.soalsoal.Length;
-        for (int i = 0; i < questionCount; i++)
+        if (IsValidJson(jsonText))
         {
-            Questions.Add(i);
+            timer = 0;
+            for (int i = 0; i < questionCount; i++)
+            {
+                Questions.Add(i);
+            }
+
+            // Debug.Log("Random" + Questions.Count);
+
+            quizData = JsonUtility.FromJson<QuizData>(jsonText);
+            title.text = quizData.quiztitle;
+            questionCount = quizData.soalsoal.Length;
+            for (int i = 0; i < questionCount; i++)
+            {
+                Questions.Add(i);
+            }
+            // Debug.Log("number of question" + questionCount);
+            scorePanel.SetActive(false);
+            questionPanel.SetActive(true);
+
+            gameState.SwitchState(State.Quiz);
+            DisplayQuestion();
+            tryAgain.SetActive(false);
         }
-       // Debug.Log("number of question" + questionCount);
-        scorePanel.SetActive(false);
-        questionPanel.SetActive(true);
-        DisplayQuestion();
+        else
+        {
+            tryAgain.SetActive(true);
+            Debug.Log("Invalid JSON");
+        }
+        
     }
     private void Validate()
     {
         code = input.text;
         url = $"https://shorturl.at/{code}";
         //Debug.Log(url);
-        StartCoroutine(LoadQuizData(url));
+       
         var req = UnityWebRequest.Get(url);
 
         req.SendWebRequest().completed += op =>
         {
-            Debug.Log(req.downloadHandler.text);
-
-            //ini buat handling kalau error atau sukses, kode nya bisa di masukin sebelum break utk masing2 kondisi
             switch (req.result)
             {
                 case UnityWebRequest.Result.Success:
+                    StartCoroutine(LoadQuizData(url));
                     break;
                 case UnityWebRequest.Result.ConnectionError:
                 case UnityWebRequest.Result.ProtocolError:
                 case UnityWebRequest.Result.DataProcessingError:
+                    Debug.Log("Invalid Code");
                     break;
             }
         };
+    }
+
+    bool IsValidJson(string jsonString)
+    {
+        try
+        {
+            // Attempt to parse the JSON string
+            var jsonData = JsonUtility.FromJson<object>(jsonString);
+            return true; // Parsing succeeded, so it's valid JSON
+        }
+        catch (Exception)
+        {
+            return false; // Parsing failed, so it's not valid JSON
+        }
     }
 
     void DisplayQuestion()
@@ -174,7 +205,7 @@ public class QuizManager : MonoBehaviour
         if (quizData != null)
         {
            
-            currentQuestionIndex = Questions[Random.Range(0,Questions.Count)];
+            currentQuestionIndex = Questions[UnityEngine.Random.Range(0,Questions.Count)];
             Debug.Log(questionCount);
             Questions.Remove(currentQuestionIndex);
 
@@ -191,7 +222,7 @@ public class QuizManager : MonoBehaviour
             for (int i = 0; i < numberOfAnswer; i++)
             {
             
-                answersIndex = Buttons[Random.Range(0, Buttons.Count)];
+                answersIndex = Buttons[UnityEngine.Random.Range(0, Buttons.Count)];
                 Buttons.Remove(answersIndex);
 
                 JawabanData answerData = currentQuestion.jawaban[answersIndex];
@@ -275,13 +306,13 @@ public class QuizManager : MonoBehaviour
     {
         scorePanel.SetActive(true);
         questionPanel.SetActive(false);
-        //gameState.SwitchState(State.FinishQuiz);
+        gameState.SwitchState(State.FinishQuiz);
     }
 
     void correctAnswer()
     {
         correctCount++;
-        score = correctCount/(questionCount)*100;
+        score = Mathf.Round((correctCount/(questionCount)*100)*10)/10;
        // Debug.Log("correct : " + correctCount);
         //change to green/ any animation
     }

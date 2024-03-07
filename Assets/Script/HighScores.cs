@@ -18,17 +18,17 @@ public class HighScores : MonoBehaviour
         myDisplay = GetComponent<DisplayHighscores>();
     }
     
-    public static void UploadScore(string username, int score)  //CALLED when Uploading new Score to WEBSITE
+    public static void UploadScore(string username, float score)  //CALLED when Uploading new Score to WEBSITE
     {//STATIC to call from other scripts easily
         instance.StartCoroutine(instance.DatabaseUpload(username,score)); //Calls Instance
     }
 
-    public void UploadNameScore(string username, int score)
+    public void UploadNameScore(string username, float score)
     {
         instance.StartCoroutine(instance.DatabaseUpload(username, score));
     }
 
-    IEnumerator DatabaseUpload(string userame, int score) //Called when sending new score to Website
+    IEnumerator DatabaseUpload(string userame, float score) //Called when sending new score to Website
     {
         WWW www = new WWW(webURL + privateCode + "/add/" + WWW.EscapeURL(userame) + "/" + score);
         yield return www;
