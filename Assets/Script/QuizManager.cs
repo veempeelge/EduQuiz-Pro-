@@ -205,7 +205,7 @@ public class QuizManager : MonoBehaviour
         if (quizData != null)
         {
            
-            currentQuestionIndex = Questions[UnityEngine.Random.Range(0,Questions.Count)];
+            currentQuestionIndex = Questions[UnityEngine.Random.Range(0,Questions.Count - 1)];
             Debug.Log(questionCount);
             Questions.Remove(currentQuestionIndex);
 
