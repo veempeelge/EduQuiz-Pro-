@@ -11,10 +11,11 @@ using static QuizManager;
 public class DropDown : MonoBehaviour
 {
     public DropDownData dropdowndata;
-    [SerializeField] Dropdown dropDown;
+    [SerializeField] TMPro.TMP_Dropdown dropDown;
     List<string> m_DropOptions = new List<string>{};
     string optionjsonText;
     [SerializeField] TMPro.TMP_InputField inputCode;
+
 
     // Start is called before the first frame update
     void Start()
