@@ -71,7 +71,7 @@ public class QuizManager : MonoBehaviour
     private void Update()
     {
         scoreDisplay = score.ToString();
-        scoreText.SetText("Score = " + scoreDisplay);
+        scoreText.SetText(scoreDisplay);
 
         if (!isClicked)
         {
