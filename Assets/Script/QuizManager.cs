@@ -113,6 +113,9 @@ public class QuizManager : MonoBehaviour
     IEnumerator LoadQuizData(string code)
     {
         UnityWebRequest request = UnityWebRequest.Get(code);
+        float startTime = Time.time;
+
+        request.downloadHandler = new DownloadHandlerBuffer();
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
@@ -127,6 +130,12 @@ public class QuizManager : MonoBehaviour
             Debug.Log(code);
             Debug.Log("Failed to load JSON: " + request.error);
         }
+    }
+
+    void UpdateLoadingBar(UnityWebRequest request)
+    {
+        // Update the loading bar value based on the download progress
+        loadingProgressBar.value = request.downloadProgress/1;
     }
 
     void ParseAndDisplayQuiz(string jsonText)
@@ -168,13 +177,16 @@ public class QuizManager : MonoBehaviour
     }
     private void Validate()
     {
-
+        loadingProgressBar.value = 0;
         loadingScreen.SetActive(true);
         code = input.text;
         url = $"https://shorturl.at/{code}";
         //Debug.Log(url);
        
         var req = UnityWebRequest.Get(url);
+
+        StartCoroutine(LoadQuizData(url));
+        StartCoroutine(UpdateLoadingBarCoroutine(url));
 
         req.SendWebRequest().completed += op =>
         {
@@ -190,6 +202,21 @@ public class QuizManager : MonoBehaviour
                     break;
             }
         };
+    }
+
+    IEnumerator UpdateLoadingBarCoroutine(string code)
+    {
+        UnityWebRequest request = UnityWebRequest.Get(code);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        // Send the request and wait until it's completed
+        yield return request.SendWebRequest();
+
+        while (!request.isDone)
+        {
+            UpdateLoadingBar(request);
+            yield return null;
+        }
     }
 
     bool IsValidJson(string jsonString)
