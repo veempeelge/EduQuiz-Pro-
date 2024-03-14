@@ -11,9 +11,9 @@ public class EnterScore : MonoBehaviour
     string playerName;
 
     public Button enterName;
-    [SerializeField] InputField enterField;
+    [SerializeField] TMP_InputField enterField;
     public TMP_Text scoreInput;
-    public Text nameText;
+    public TMP_Text nameText;
     [SerializeField] QuizManager quizManager;
 
     [SerializeField] dreamloLeaderBoard dreamLo;

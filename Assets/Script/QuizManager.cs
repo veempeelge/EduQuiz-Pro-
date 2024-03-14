@@ -73,7 +73,7 @@ public class QuizManager : MonoBehaviour
         //gameState.SwitchState(State.EnterCode);
         // input.onEndEdit.AddListener(Validate);
         enterButton.onClick.AddListener(Validate);
-       customInt = FindAnyObjectByType<CustomInteractable>();
+        customInt = FindAnyObjectByType<CustomInteractable>();
     }
 
     private void Update()
@@ -127,6 +127,8 @@ public class QuizManager : MonoBehaviour
         else
         {
             loadingScreen.SetActive(false);
+            enterButton.interactable = true;
+
             Debug.Log(code);
             Debug.Log("Failed to load JSON: " + request.error);
         }
@@ -169,6 +171,7 @@ public class QuizManager : MonoBehaviour
         }
         else
         {
+            enterButton.interactable = true;
             loadingScreen.SetActive(false);
             tryAgain.SetActive(true);
             Debug.Log("Invalid JSON");
@@ -177,6 +180,7 @@ public class QuizManager : MonoBehaviour
     }
     private void Validate()
     {
+        enterButton.interactable = false;
         loadingProgressBar.value = 0;
         loadingScreen.SetActive(true);
         code = input.text;
@@ -185,7 +189,7 @@ public class QuizManager : MonoBehaviour
        
         var req = UnityWebRequest.Get(url);
 
-        StartCoroutine(LoadQuizData(url));
+        //StartCoroutine(LoadQuizData(url));
         StartCoroutine(UpdateLoadingBarCoroutine(url));
 
         req.SendWebRequest().completed += op =>
