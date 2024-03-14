@@ -62,6 +62,7 @@ public class QuizManager : MonoBehaviour
     CustomInteractable customInt;
 
     [SerializeField] Slider loadingProgressBar;
+    bool gameStarted = false;
 
     private void Start()
     {
@@ -85,15 +86,14 @@ public class QuizManager : MonoBehaviour
         {
             timer += 1f * Time.deltaTime;
         }
-       
 
-        if (timer > maxTimer)
+        if (gameStarted)
         {
-            unanswered();
-            
+            if (timer > maxTimer)
+            {
+                unanswered();
+            }
         }
-
-       
 
         timerImage.fillAmount = timer / maxTimer;
     }
@@ -120,6 +120,7 @@ public class QuizManager : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
+            
             loadingScreen.SetActive(false);
             string jsonText = request.downloadHandler.text;
             ParseAndDisplayQuiz(jsonText);
@@ -145,6 +146,7 @@ public class QuizManager : MonoBehaviour
 
         if (IsValidJson(jsonText))
         {
+            gameStarted = true;
             timer = 0;
             for (int i = 0; i < questionCount; i++)
             {
@@ -281,12 +283,7 @@ public class QuizManager : MonoBehaviour
           
 
                 answerButtons.Add(answerButton);
-
-                
-
             }
-
-
         }
     }
 

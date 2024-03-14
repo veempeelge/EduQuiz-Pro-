@@ -100,7 +100,7 @@ public class DisplayHighscores : MonoBehaviour
     {
        
     }
-    IEnumerator RefreshHighscores() //Refreshes the scores every 30 seconds
+    IEnumerator RefreshHighscores()
     {
         while(true)
         {
@@ -108,8 +108,21 @@ public class DisplayHighscores : MonoBehaviour
             Numbers.Clear();
             Scores.Clear();
 
+        
+            DestroyChildren(nameTextParent);
+            DestroyChildren(scoreTextParent);
+            DestroyChildren(numberParent);
+
             myScores.DownloadScores();
             yield return new WaitForSeconds(30);
+        }
+    }
+
+    void DestroyChildren(Transform parent)
+    {
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
         }
     }
 
