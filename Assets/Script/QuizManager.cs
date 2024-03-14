@@ -12,6 +12,7 @@ public class QuizManager : MonoBehaviour
 {
     public TextMeshProUGUI questionText;
     public Button answerButtonPrefab;
+    public Sprite[] buttonSprite;
     public Transform answerButtonParent;
     private int questionCount;
     public string code;
@@ -29,6 +30,7 @@ public class QuizManager : MonoBehaviour
     [SerializeField] GameObject questionPanel;
     [SerializeField] GameObject inputCodePanel;
     [SerializeField] GameObject previewButton;
+    [SerializeField] GameObject loadingScreen;
     [SerializeField] TMP_Text title;
 
     float correctCount;
@@ -56,8 +58,14 @@ public class QuizManager : MonoBehaviour
     [SerializeField] GameState gameState;
     [SerializeField] private GameObject tryAgain;
 
+    public bool correctAns;
+    CustomInteractable customInt;
+
+    [SerializeField] Slider loadingProgressBar;
+
     private void Start()
     {
+        loadingScreen.SetActive(false);
         previewButton.SetActive(false);
         scorePanel.SetActive(false);
         questionPanel.SetActive(false);
@@ -65,7 +73,7 @@ public class QuizManager : MonoBehaviour
         //gameState.SwitchState(State.EnterCode);
         // input.onEndEdit.AddListener(Validate);
         enterButton.onClick.AddListener(Validate);
-       
+       customInt = FindAnyObjectByType<CustomInteractable>();
     }
 
     private void Update()
@@ -104,20 +112,18 @@ public class QuizManager : MonoBehaviour
     }
     IEnumerator LoadQuizData(string code)
     {
-
         UnityWebRequest request = UnityWebRequest.Get(code);
-        
-
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-           
+            loadingScreen.SetActive(false);
             string jsonText = request.downloadHandler.text;
             ParseAndDisplayQuiz(jsonText);
         }
         else
         {
+            loadingScreen.SetActive(false);
             Debug.Log(code);
             Debug.Log("Failed to load JSON: " + request.error);
         }
@@ -150,9 +156,11 @@ public class QuizManager : MonoBehaviour
             gameState.SwitchState(State.Quiz);
             DisplayQuestion();
             tryAgain.SetActive(false);
+            loadingScreen.SetActive(false);
         }
         else
         {
+            loadingScreen.SetActive(false);
             tryAgain.SetActive(true);
             Debug.Log("Invalid JSON");
         }
@@ -160,6 +168,8 @@ public class QuizManager : MonoBehaviour
     }
     private void Validate()
     {
+
+        loadingScreen.SetActive(true);
         code = input.text;
         url = $"https://shorturl.at/{code}";
         //Debug.Log(url);
@@ -198,6 +208,7 @@ public class QuizManager : MonoBehaviour
 
     void DisplayQuestion()
     {
+        loadingScreen.SetActive(false);
         QCountDisplay.SetText(questionAnswered + 1 + "/" + questionCount);
         timer = 0;
         ClearAnswerButtons();
@@ -206,7 +217,7 @@ public class QuizManager : MonoBehaviour
         {
            
             currentQuestionIndex = Questions[UnityEngine.Random.Range(0,Questions.Count - 1)];
-            Debug.Log(questionCount);
+            //Debug.Log(questionCount);
             Questions.Remove(currentQuestionIndex);
 
             SoalData currentQuestion = quizData.soalsoal[currentQuestionIndex];
@@ -217,6 +228,9 @@ public class QuizManager : MonoBehaviour
             for (int a = 0; a < numberOfAnswer; a++)
             {
                 Buttons.Add(a);
+
+                JawabanData answerData = currentQuestion.jawaban[a];
+
             }
 
             for (int i = 0; i < numberOfAnswer; i++)
@@ -224,19 +238,24 @@ public class QuizManager : MonoBehaviour
             
                 answersIndex = Buttons[UnityEngine.Random.Range(0, Buttons.Count)];
                 Buttons.Remove(answersIndex);
-
+                
                 JawabanData answerData = currentQuestion.jawaban[answersIndex];
                 Button answerButton = Instantiate(answerButtonPrefab, answerButtonParent);
                 answerButton.GetComponentInChildren<TextMeshProUGUI>().text = answerData.jawaban;
-
-                
+                answerButton.GetComponent<CustomInteractable>().SetCorrect(answerData.benar);
                 int index = i;
                 answerButton.onClick.AddListener(() => OnAnswerButtonClicked(index, answerData.benar));
+                answerButton.GetComponent<Image>().sprite = buttonSprite[i];
+
+          
 
                 answerButtons.Add(answerButton);
+
                 
-                
+
             }
+
+
         }
     }
 
@@ -249,22 +268,24 @@ public class QuizManager : MonoBehaviour
         answerButtons.Clear();
     }
 
-    void OnAnswerButtonClicked(int selectedIndex, bool isCorrect)
+    public void OnAnswerButtonClicked(int selectedIndex, bool isCorrect)
     {
         if (!isClicked)
         {
             _clickedButton = answerButtons[selectedIndex];
-            Debug.Log("Selected Index: " + selectedIndex + ", Correct: " + isCorrect);
+          //  Debug.Log("Selected Index: " + selectedIndex + ", Correct: " + isCorrect);
             
 
             if (isCorrect)
             {
-                _clickedButton.GetComponent<Image>().color = Color.green;
+                
+                //_clickedButton.GetComponent<Image>().color = Color.green;
                 correctAnswer();
             }
             else
             {
-                _clickedButton.GetComponent<Image>().color = Color.red;
+                //_clickedButton.GetComponent<Image>().color = Color.red;
+         
                 //wrong answer animation
             }
 
@@ -313,8 +334,9 @@ public class QuizManager : MonoBehaviour
     {
         correctCount++;
         score = Mathf.Round((correctCount/(questionCount)*100)*10)/10;
-       // Debug.Log("correct : " + correctCount);
+        // Debug.Log("correct : " + correctCount);
         //change to green/ any animation
+ 
     }
 
     void BackToMainMenu()
