@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -10,16 +11,20 @@ public class DisplayHighscores : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI[] rNames;
     public TMPro.TextMeshProUGUI[] rScores;
+    public TMPro.TextMeshProUGUI[] rNumbers;
 
-    [SerializeField] TextMeshProUGUI textPrefabs, firstText, secondText, thirdText;
+    [SerializeField] TextMeshProUGUI textPrefabs, firstText, secondText, thirdText, numbersPrefabs;
     [SerializeField] TextMeshProUGUI scorePrefabs, firstScore, secondScore, thirdScore;
-
+    [SerializeField] GameObject boxPrefab;
 
     [SerializeField] Transform nameTextParent;
     [SerializeField] Transform scoreTextParent;
+    [SerializeField] Transform numberParent;
+    [SerializeField] Transform boxParent;
 
     public List<int> Names = new List<int>();
     public List<int> Scores = new List<int>();
+    public List<int> Numbers = new List<int>();
 
     HighScores myScores;
 
@@ -34,21 +39,32 @@ public class DisplayHighscores : MonoBehaviour
     }
     public void SetScoresToMenu(PlayerScore[] highscoreList) //Assigns proper name and score for each text value
     {
+        
         for (int a = 0; a < highscoreList.Length; a++)
         {
+            Numbers.Add(a);
             Names.Add(a);
             Scores.Add(a);
+
+        }
+
+        for (int x = 0; x < Names.Count - 3; x++)
+        {
+            GameObject boxObject = Instantiate(boxPrefab, boxParent);
         }
 
         for (int i = 0; i < Names.Count;i ++)
         {
             string stringFormat = "0.0";
+            int numbers = i + 1;
             TMP_Text nameText = Instantiate(textPrefabs, nameTextParent);
             TMP_Text scoreText = Instantiate(scorePrefabs, scoreTextParent);
-
+            TMP_Text numberText = Instantiate(numbersPrefabs, numberParent);
+           
 
             nameText.text = highscoreList[i].username;
             scoreText.text = highscoreList[i].score.ToString(stringFormat);
+            numberText.text = numbers.ToString();
 
             if (i == 0)
             {
@@ -88,6 +104,10 @@ public class DisplayHighscores : MonoBehaviour
     {
         while(true)
         {
+            Names.Clear();
+            Numbers.Clear();
+            Scores.Clear();
+
             myScores.DownloadScores();
             yield return new WaitForSeconds(30);
         }
