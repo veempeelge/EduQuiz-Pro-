@@ -67,15 +67,15 @@ public class DisplayHighscores : MonoBehaviour
 
             if (i == 0)
             {
-                color = Color.yellow;
+                color = new Color(1f, 0.7f, 0.02f, 1f);
             }
             else if (i == 1)
             {
-                color = Color.blue;
+                color = new Color(0.39f, 0.4f, 0.67f, 1f);
             }
             else if (i == 2)
             {
-                color = Color.cyan ;
+                color = new Color(0.9f, 0.5f, 0f, 1f);
             }
 
             entry.Setup(numbers, highscoreList[i].username, highscoreList[i].score, color);
@@ -84,28 +84,28 @@ public class DisplayHighscores : MonoBehaviour
             //scoreText.text = highscoreList[i].score.ToString(stringFormat);
             //numberText.text = numbers.ToString();
 
-            //if (i == 0)
-            //{
-            //    firstText.text = highscoreList[i].username;
-            //    firstScore.text = highscoreList[i].score.ToString(stringFormat);
-            //}
+            if (i == 0)
+            {
+                firstText.text = highscoreList[i].username;
+                firstScore.text = highscoreList[i].score.ToString();
+            }
 
-            //else if (i == 1)
-            //{
-            //    secondText.text = highscoreList[i].username;
-            //    secondScore.text = highscoreList[i].score.ToString(stringFormat);
-            //}
+            else if (i == 1)
+            {
+                secondText.text = highscoreList[i].username;
+                secondScore.text = highscoreList[i].score.ToString();
+            }
 
-            //else if (i == 2)
-            //{
-            //    thirdText.text = highscoreList[i].username;
-            //    thirdScore.text = highscoreList[i].score.ToString(stringFormat);
-            //}
-            
+            else if (i == 2)
+            {
+                thirdText.text = highscoreList[i].username;
+                thirdScore.text = highscoreList[i].score.ToString();
+            }
 
-               // rNames[i].text = i + 1 + ". ";
-               // if (highscoreList.Length < i)
-                {
+
+            //rNames[i].text = i + 1 + ". ";
+            //if (highscoreList.Length < i)
+            {
                   // rScores[i].text = highscoreList[i].score.ToString();
                   // rNames[i].text = highscoreList[i].username;
 

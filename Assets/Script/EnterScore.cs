@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
+using System.Web;
 
 public class EnterScore : MonoBehaviour
 {
@@ -22,22 +24,22 @@ public class EnterScore : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        enterField.onValueChanged.AddListener(InputChanged);
         enterName.onClick.AddListener(LeaderboardInput);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void InputChanged(string newName)
     {
         score = quizManager.score;
-        playerName = nameText.text;
+        playerName = HttpUtility.UrlEncode(newName);
+        Debug.Log(playerName);
     }
 
     void LeaderboardInput()
     {
         Debug.Log(name + score);
         SceneManager.LoadScene("Leaderboard");
-       // HighScores.UploadScore(playerName, score);
+        // HighScores.UploadScore(playerName, score);
         highScore.UploadNameScore(playerName, score);
         dreamLo.AddScore(name, score);
 
