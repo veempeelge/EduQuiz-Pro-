@@ -13,6 +13,8 @@ public class DisplayHighscores : MonoBehaviour
     public TMPro.TextMeshProUGUI[] rScores;
     public TMPro.TextMeshProUGUI[] rNumbers;
 
+    [SerializeField] ScoreEntryUi scoreEntryUiPrefab;
+    [SerializeField] RectTransform scrollContainer;
     [SerializeField] TextMeshProUGUI textPrefabs, firstText, secondText, thirdText, numbersPrefabs;
     [SerializeField] TextMeshProUGUI scorePrefabs, firstScore, secondScore, thirdScore;
     [SerializeField] GameObject boxPrefab;
@@ -55,34 +57,50 @@ public class DisplayHighscores : MonoBehaviour
 
         for (int i = 0; i < Names.Count;i ++)
         {
-            string stringFormat = "0.0";
+            //string stringFormat = "0.0";
             int numbers = i + 1;
-            TMP_Text nameText = Instantiate(textPrefabs, nameTextParent);
-            TMP_Text scoreText = Instantiate(scorePrefabs, scoreTextParent);
-            TMP_Text numberText = Instantiate(numbersPrefabs, numberParent);
-           
-
-            nameText.text = highscoreList[i].username;
-            scoreText.text = highscoreList[i].score.ToString(stringFormat);
-            numberText.text = numbers.ToString();
+            //TMP_Text nameText = Instantiate(textPrefabs, nameTextParent);
+            //TMP_Text scoreText = Instantiate(scorePrefabs, scoreTextParent);
+            //TMP_Text numberText = Instantiate(numbersPrefabs, numberParent);
+            var entry = Instantiate(scoreEntryUiPrefab, scrollContainer);
+            var color = new Color(0.3f, 0.3f, 0.3f, 0.3f);
 
             if (i == 0)
             {
-                firstText.text = highscoreList[i].username;
-                firstScore.text = highscoreList[i].score.ToString(stringFormat);
+                color = Color.red;
             }
-
             else if (i == 1)
             {
-                secondText.text = highscoreList[i].username;
-                secondScore.text = highscoreList[i].score.ToString(stringFormat);
+                color = Color.green;
             }
-
             else if (i == 2)
             {
-                thirdText.text = highscoreList[i].username;
-                thirdScore.text = highscoreList[i].score.ToString(stringFormat);
+                color = Color.blue;
             }
+
+            entry.Setup(numbers, highscoreList[i].username, highscoreList[i].score, color);
+
+            //nameText.text = highscoreList[i].username;
+            //scoreText.text = highscoreList[i].score.ToString(stringFormat);
+            //numberText.text = numbers.ToString();
+
+            //if (i == 0)
+            //{
+            //    firstText.text = highscoreList[i].username;
+            //    firstScore.text = highscoreList[i].score.ToString(stringFormat);
+            //}
+
+            //else if (i == 1)
+            //{
+            //    secondText.text = highscoreList[i].username;
+            //    secondScore.text = highscoreList[i].score.ToString(stringFormat);
+            //}
+
+            //else if (i == 2)
+            //{
+            //    thirdText.text = highscoreList[i].username;
+            //    thirdScore.text = highscoreList[i].score.ToString(stringFormat);
+            //}
             
 
                // rNames[i].text = i + 1 + ". ";
