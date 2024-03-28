@@ -67,15 +67,15 @@ public class DisplayHighscores : MonoBehaviour
 
             if (i == 0)
             {
-                color = Color.red;
+                color = Color.yellow;
             }
             else if (i == 1)
             {
-                color = Color.green;
+                color = Color.blue;
             }
             else if (i == 2)
             {
-                color = Color.blue;
+                color = Color.cyan ;
             }
 
             entry.Setup(numbers, highscoreList[i].username, highscoreList[i].score, color);
