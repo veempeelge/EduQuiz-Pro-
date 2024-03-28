@@ -57,6 +57,8 @@ public class QuizManager : MonoBehaviour
 
     [SerializeField] GameState gameState;
     [SerializeField] private GameObject tryAgain;
+    [SerializeField] private GameObject noConnection;
+
 
     public bool correctAns;
     CustomInteractable customInt;
@@ -71,6 +73,7 @@ public class QuizManager : MonoBehaviour
         scorePanel.SetActive(false);
         questionPanel.SetActive(false);
         tryAgain.SetActive(false);
+        noConnection.SetActive(false);
         //gameState.SwitchState(State.EnterCode);
         // input.onEndEdit.AddListener(Validate);
         enterButton.onClick.AddListener(Validate);
@@ -169,6 +172,7 @@ public class QuizManager : MonoBehaviour
             gameState.SwitchState(State.Quiz);
             DisplayQuestion();
             tryAgain.SetActive(false);
+            noConnection.SetActive(false);
             loadingScreen.SetActive(false);
         }
         else
@@ -202,6 +206,8 @@ public class QuizManager : MonoBehaviour
                     StartCoroutine(LoadQuizData(url));
                     break;
                 case UnityWebRequest.Result.ConnectionError:
+                    noConnection.SetActive(true);
+                    break;
                 case UnityWebRequest.Result.ProtocolError:
                 case UnityWebRequest.Result.DataProcessingError:
                     Debug.Log("Invalid Code");
