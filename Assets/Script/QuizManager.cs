@@ -58,6 +58,8 @@ public class QuizManager : MonoBehaviour
     [SerializeField] GameState gameState;
     [SerializeField] private GameObject tryAgain;
     [SerializeField] private GameObject noConnection;
+    [SerializeField] private GameObject invalidCode;
+
 
 
     public bool correctAns;
@@ -65,6 +67,8 @@ public class QuizManager : MonoBehaviour
 
     [SerializeField] Slider loadingProgressBar;
     bool gameStarted = false;
+
+    [SerializeField] GameObject timesUpPanel;
 
     private void Start()
     {
@@ -74,6 +78,8 @@ public class QuizManager : MonoBehaviour
         questionPanel.SetActive(false);
         tryAgain.SetActive(false);
         noConnection.SetActive(false);
+        timesUpPanel.SetActive(false);
+        invalidCode.SetActive(false);
         //gameState.SwitchState(State.EnterCode);
         // input.onEndEdit.AddListener(Validate);
         enterButton.onClick.AddListener(Validate);
@@ -88,13 +94,28 @@ public class QuizManager : MonoBehaviour
         if (!isClicked)
         {
             timer += 1f * Time.deltaTime;
+            foreach (Button t in answerButtons)
+            {
+                t.interactable = true;
+            }
+        }
+        else
+        {
+            foreach (Button t in answerButtons)
+            {
+                t.interactable = false;
+            }
         }
 
         if (gameStarted)
         {
             if (timer > maxTimer)
             {
+
+                isClicked = true;
+                timesUpPanel.SetActive(true);
                 unanswered();
+               // Invoke(nameof(HideTimesUp),2f);
             }
         }
 
@@ -108,7 +129,7 @@ public class QuizManager : MonoBehaviour
 
     void unanswered()
     {
-        Invoke(nameof(DisplayQuestion), 1f);
+        Invoke(nameof(DisplayQuestion), 2f);
         questionAnswered++;
         Debug.Log("unanswered");
         timer = 0;
@@ -190,7 +211,7 @@ public class QuizManager : MonoBehaviour
         loadingProgressBar.value = 0;
         loadingScreen.SetActive(true);
         code = input.text;
-        url = $"https://shorturl.at/{code}";
+        url = $"https://rb.gy/{code}";
         //Debug.Log(url);
        
         var req = UnityWebRequest.Get(url);
@@ -204,13 +225,26 @@ public class QuizManager : MonoBehaviour
             {
                 case UnityWebRequest.Result.Success:
                     StartCoroutine(LoadQuizData(url));
+                    loadingScreen.SetActive(false);
+                    enterButton.interactable = true;
+
                     break;
                 case UnityWebRequest.Result.ConnectionError:
                     noConnection.SetActive(true);
+                    invalidCode.SetActive(false);
+                    loadingScreen.SetActive(false);
+                    enterButton.interactable = true;
+
                     break;
                 case UnityWebRequest.Result.ProtocolError:
                 case UnityWebRequest.Result.DataProcessingError:
                     Debug.Log("Invalid Code");
+                    invalidCode.SetActive(true);
+                    noConnection.SetActive(false);
+
+                    loadingScreen.SetActive(false);
+                    enterButton.interactable = true;
+
                     break;
             }
         };
@@ -247,6 +281,7 @@ public class QuizManager : MonoBehaviour
 
     void DisplayQuestion()
     {
+        timesUpPanel.SetActive(false);
         loadingScreen.SetActive(false);
         QCountDisplay.SetText(questionAnswered + 1 + "/" + questionCount);
         timer = 0;
@@ -367,7 +402,7 @@ public class QuizManager : MonoBehaviour
     void correctAnswer()
     {
         correctCount++;
-        score = Mathf.Round((correctCount/(questionCount)*100)*10)/10;
+        score = Mathf.RoundToInt((correctCount/(questionCount)*100)*10)/10;
         // Debug.Log("correct : " + correctCount);
         //change to green/ any animation
  

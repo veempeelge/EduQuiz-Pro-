@@ -1894,6 +1894,7 @@ MonoBehaviour:
   secondScore: {fileID: 1794573379}
   thirdScore: {fileID: 1867078929}
   boxPrefab: {fileID: 8437820217657000127, guid: 331919fae0effb341ae6e4d12ba2fdee, type: 3}
+  mainParent: {fileID: 489067628}
   nameTextParent: {fileID: 1825605880}
   scoreTextParent: {fileID: 170905492}
   numberParent: {fileID: 690338000}

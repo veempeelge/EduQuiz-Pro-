@@ -18,6 +18,7 @@ public class DisplayHighscores : MonoBehaviour
     [SerializeField] TextMeshProUGUI textPrefabs, firstText, secondText, thirdText, numbersPrefabs;
     [SerializeField] TextMeshProUGUI scorePrefabs, firstScore, secondScore, thirdScore;
     [SerializeField] GameObject boxPrefab;
+    [SerializeField] Transform mainParent;
 
     [SerializeField] Transform nameTextParent;
     [SerializeField] Transform scoreTextParent;
@@ -127,12 +128,13 @@ public class DisplayHighscores : MonoBehaviour
             Scores.Clear();
 
         
-            DestroyChildren(nameTextParent);
+            DestroyChildren(boxParent);
             DestroyChildren(scoreTextParent);
             DestroyChildren(numberParent);
+            DestroyChildren(mainParent);
 
             myScores.DownloadScores();
-            yield return new WaitForSeconds(30);
+            yield return new WaitForSeconds(5);
         }
     }
 
