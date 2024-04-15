@@ -1465,7 +1465,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!223 &290213298
 Canvas:
   m_ObjectHideFlags: 0
@@ -1891,6 +1891,7 @@ MonoBehaviour:
   invalidCode: {fileID: 930898807}
   correctAns: 0
   loadingProgressBar: {fileID: 1324796238}
+  timesUpPanel: {fileID: 290213297}
 --- !u!114 &356067646
 MonoBehaviour:
   m_ObjectHideFlags: 0
