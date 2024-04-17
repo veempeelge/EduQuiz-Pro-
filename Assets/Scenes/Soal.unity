@@ -316,8 +316,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Quiz Title
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ccf37e122eb1cca44b6a69381844a0ee, type: 2}
-  m_sharedMaterial: {fileID: -4220420523617914069, guid: ccf37e122eb1cca44b6a69381844a0ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9f5c72690e79c1c408ebb34ca76ce09e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: e065b77de5b78a445adf1e30a0e61120, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2415,7 +2415,7 @@ MonoBehaviour:
   m_text: No Internet Connection
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9f5c72690e79c1c408ebb34ca76ce09e, type: 2}
-  m_sharedMaterial: {fileID: 626544812116475450, guid: 9f5c72690e79c1c408ebb34ca76ce09e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: e065b77de5b78a445adf1e30a0e61120, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4145,7 +4145,7 @@ MonoBehaviour:
   m_text: Quiz not found, please try again!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9f5c72690e79c1c408ebb34ca76ce09e, type: 2}
-  m_sharedMaterial: {fileID: 626544812116475450, guid: 9f5c72690e79c1c408ebb34ca76ce09e, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: e065b77de5b78a445adf1e30a0e61120, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5588,12 +5588,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 37
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
-  m_fontSizeMax: 60
+  m_fontSizeMin: 10
+  m_fontSizeMax: 37
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -6638,8 +6638,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4292138203
-  m_fontColor: {r: 0.8584906, g: 0.8301442, b: 0.8301442, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6656,12 +6656,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60
+  m_fontSize: 45
   m_fontSizeBase: 65
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 60
+  m_fontSizeMax: 45
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512

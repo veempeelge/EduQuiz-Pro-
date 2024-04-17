@@ -211,7 +211,7 @@ public class QuizManager : MonoBehaviour
         loadingProgressBar.value = 0;
         loadingScreen.SetActive(true);
         code = input.text;
-        url = $"https://rb.gy/{code}";
+        url = $"https://api.npoint.io/{code}";
         //Debug.Log(url);
        
         var req = UnityWebRequest.Get(url);
