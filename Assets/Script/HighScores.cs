@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,11 +42,11 @@ public class HighScores : MonoBehaviour
         else Debug.Log("Error uploading" + www.error);
     }
 
-    public void DownloadScores()
+    public void DownloadScores(Action callback = null)
     {
-        StartCoroutine("DatabaseDownload");
+        StartCoroutine("DatabaseDownload", callback);
     }
-    IEnumerator DatabaseDownload()
+    IEnumerator DatabaseDownload(Action clearCallback = null)
     {
         WWW www = new WWW(webURL + publicCode + "/pipe/"); //Gets the whole list
         //WWW www = new WWW(webURL + publicCode + "/pipe/0/10"); //Gets top 10
@@ -54,6 +55,7 @@ public class HighScores : MonoBehaviour
         if (string.IsNullOrEmpty(www.error))
         {
             OrganizeInfo(www.text);
+            clearCallback?.Invoke();
             myDisplay.SetScoresToMenu(scoreList);
         }
         else print("Error uploading" + www.error);

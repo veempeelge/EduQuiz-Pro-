@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -123,17 +124,20 @@ public class DisplayHighscores : MonoBehaviour
     {
         while(true)
         {
-            Names.Clear();
-            Numbers.Clear();
-            Scores.Clear();
+            Action clearAction = () =>
+            {
+                Names.Clear();
+                Numbers.Clear();
+                Scores.Clear();
 
-        
-            DestroyChildren(boxParent);
-            DestroyChildren(scoreTextParent);
-            DestroyChildren(numberParent);
-            DestroyChildren(mainParent);
 
-            myScores.DownloadScores();
+                DestroyChildren(boxParent);
+                DestroyChildren(scoreTextParent);
+                DestroyChildren(numberParent);
+                DestroyChildren(mainParent);
+            };
+
+            myScores.DownloadScores(clearAction);
             yield return new WaitForSeconds(5);
         }
     }

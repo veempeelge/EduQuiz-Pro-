@@ -144,7 +144,6 @@ public class QuizManager : MonoBehaviour
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            
             loadingScreen.SetActive(false);
             string jsonText = request.downloadHandler.text;
             ParseAndDisplayQuiz(jsonText);
